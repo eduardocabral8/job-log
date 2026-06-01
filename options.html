@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Job Log — Configuración</title>
+  <style>
+    :root {
+
+      --bg: oklch(0.19 0.006 240);
+      --surface: oklch(0.24 0.008 240);
+      --input-bg: oklch(0.15 0.005 240);
+      --border-color: oklch(0.31 0.010 240);
+      --input-border: oklch(0.39 0.012 240);
+      --text-main: oklch(0.93 0.004 240);
+      --text-muted: oklch(0.66 0.008 240);
+      --text-faint: oklch(0.42 0.008 240);
+
+      --accent: oklch(0.60 0.07 240);
+      --accent-hover: oklch(0.65 0.08 240);
+      --accent-press: oklch(0.55 0.06 240);
+      --on-accent: oklch(0.15 0.005 240);
+      --focus-ring: rgba(96, 138, 166, 0.20);
+
+      --accent-soft: oklch(0.60 0.07 240 / 0.04);
+      --accent-soft-press: oklch(0.60 0.07 240 / 0.08);
+
+      --success-bg: oklch(0.24 0.03 145);
+      --success-border: oklch(0.30 0.04 145);
+      --success-text: oklch(0.75 0.11 145);
+
+      --error-bg: oklch(0.22 0.03 25);
+      --error-border: oklch(0.28 0.04 25);
+      --error-text: oklch(0.67 0.13 25);
+
+      --warning-bg: oklch(0.23 0.03 75);
+      --warning-border: oklch(0.30 0.04 75);
+      --warning-text: oklch(0.77 0.09 75);
+
+      --disabled-bg: oklch(0.26 0.006 240);
+      --disabled-border: oklch(0.29 0.006 240);
+      --disabled-text: oklch(0.48 0.006 240);
+
+      --font-sans: 'SF Pro Display', 'Switzer', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', 'JetBrains Mono', monospace;
+
+      --fs-wordmark: 1.75rem;
+      --fs-title: 1rem;
+      --fs-section: 0.9375rem;
+      --fs-body: 0.8125rem;
+      --fs-small: 0.75rem;
+      --fs-caption: 0.6875rem;
+      --fs-xs: 0.625rem;
+
+      --fw-light: 300;
+      --fw-regular: 400;
+      --fw-medium: 500;
+      --fw-semibold: 600;
+
+      --lh-tight: 1.15;
+      --lh-normal: 1.4;
+      --lh-loose: 1.6;
+
+      --ls-caps: 0.08em;
+      --ls-wide: 0.05em;
+      --ls-tight: -0.015em;
+      --ls-wordmark: -0.03em;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      padding: 48px 24px;
+      box-sizing: border-box;
+    }
+
+    .app-header {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .app-title {
+      font-size: var(--fs-wordmark);
+      font-weight: var(--fw-light);
+      color: var(--text-main);
+      letter-spacing: var(--ls-wordmark);
+      margin-bottom: 4px;
+    }
+
+    .app-subtitle {
+      font-size: var(--fs-caption);
+      font-weight: var(--fw-medium);
+      color: var(--text-muted);
+      letter-spacing: var(--ls-caps);
+      text-transform: uppercase;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: var(--border-color);
+      margin-bottom: 32px;
+      width: 100%;
+    }
+
+    .card {
+      border-radius: 6px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-sizing: border-box;
+      background-color: var(--surface);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:focus-within {
+      border-color: var(--text-muted);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
+    }
+
+    .header-with-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    h1, h2 {
+      font-size: var(--fs-section);
+      font-weight: var(--fw-semibold);
+      margin: 0;
+      letter-spacing: var(--ls-tight);
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: var(--fs-body);
+      margin-bottom: 24px;
+      line-height: var(--lh-normal);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: var(--fs-caption);
+      font-weight: var(--fw-semibold);
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--ls-caps);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    label svg {
+      opacity: 0.6;
+      stroke: var(--text-muted);
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .input-wrapper:hover {
+      border-color: var(--text-muted);
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--accent) !important;
+      background-color: var(--input-bg);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .input-wrapper input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-size: var(--fs-body);
+      outline: none;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .btn-toggle {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      height: 100%;
+      transition: color 0.15s ease;
+    }
+
+    .btn-toggle:hover {
+      color: var(--text-main);
+    }
+
+    input[type="text"] {
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-size: var(--fs-body);
+      outline: none;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    input[type="text"]:hover {
+      border-color: var(--text-muted);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      background-color: var(--input-bg);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .stepper-wrapper {
+      display: flex;
+      align-items: center;
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stepper-wrapper:hover {
+      border-color: var(--text-muted);
+    }
+
+    .stepper-wrapper:focus-within {
+      border-color: var(--accent) !important;
+      background-color: var(--input-bg);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .stepper-wrapper input {
+      flex: 1;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 8px 5px;
+      font-size: var(--fs-body);
+      outline: none;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+      margin: 0;
+    }
+
+    .stepper-wrapper input::-webkit-inner-spin-button,
+    .stepper-wrapper input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .stepper-btn {
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      font-size: var(--fs-section);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+      user-select: none;
+    }
+
+    .stepper-btn:hover {
+      background-color: var(--accent);
+      color: var(--on-accent);
+    }
+
+    .stepper-btn:active {
+      background-color: var(--accent-press);
+    }
+
+    .btn-save {
+      background: var(--accent);
+      color: var(--on-accent);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      height: 38px;
+      padding: 0 14px;
+      font-size: var(--fs-body);
+      font-weight: var(--fw-semibold);
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-save:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-save:active:not(:disabled) {
+      background: var(--accent-press);
+      border-color: var(--accent-press);
+      transform: translateY(1px) scale(0.985);
+    }
+
+    .btn-save:disabled {
+      background: var(--disabled-bg);
+      border-color: var(--disabled-border);
+      color: var(--disabled-text);
+      cursor: not-allowed;
+    }
+
+    .btn-danger {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
+      border-radius: 6px;
+      height: 38px;
+      padding: 0 14px;
+      font-size: var(--fs-body);
+      font-weight: var(--fw-semibold);
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: var(--error-border);
+    }
+
+    .btn-danger:active:not(:disabled) {
+      transform: translateY(1px) scale(0.985);
+    }
+
+    .btn-danger:disabled {
+      background: var(--disabled-bg);
+      border-color: var(--disabled-border);
+      color: var(--disabled-text);
+      cursor: not-allowed;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--ls-wide);
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .badge.success {
+      color: var(--success-text);
+      background-color: var(--success-bg);
+      border-color: var(--success-border);
+    }
+
+    .badge.warning {
+      color: var(--warning-text);
+      background-color: var(--warning-bg);
+      border-color: var(--warning-border);
+    }
+
+    .status-msg {
+      margin-top: 16px;
+      font-size: var(--fs-body);
+      text-align: left;
+      min-height: 18px;
+      font-weight: var(--fw-medium);
+      padding: 10px 14px;
+      border-radius: 6px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: none;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .status-msg:not(:empty) {
+      display: block;
+    }
+
+    .status-msg.success {
+      display: block;
+      background-color: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success-text);
+    }
+
+    .status-msg.error {
+      display: block;
+      background-color: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: var(--error-text);
+      word-break: break-word;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <div class="app-title">Job Log</div>
+      <div class="app-subtitle">Panel de administración</div>
+    </header>
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="header-with-badge">
+        <h1>Configuración de Job Log</h1>
+      </div>
+      <div class="subtitle">Datos requeridos para conectar la extensión.</div>
+
+      <form id="configForm">
+        <div class="form-group">
+          <label for="geminiApiKey">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Gemini API Key</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="password" id="geminiApiKey" required autocomplete="off">
+            <button type="button" id="toggleApiKey" class="btn-toggle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 5c7 0 10 7 10 7a19.5 19.5 0 0 1-5.07 5.94M1 1l22 22"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="spreadsheetId">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>URL de Google Sheets</span>
+          </label>
+          <input type="text" id="spreadsheetId" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="cvGoal">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Objetivo de CVs por semana</span>
+          </label>
+          <div class="stepper-wrapper">
+            <button type="button" class="stepper-btn" id="btnMinus">-</button>
+            <input type="number" id="cvGoal" value="25" min="1" required autocomplete="off">
+            <button type="button" class="stepper-btn" id="btnPlus">+</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-save" id="btnSave">Guardar configuración</button>
+      </form>
+      <div id="status" class="status-msg"></div>
+    </div>
+
+    <div class="card" id="googleAccountCard">
+      <h2>Cuenta de Google</h2>
+      <div class="subtitle">Conexión con la hoja de cálculo de Google Sheets.</div>
+
+      <div style="display: flex; gap: 12px; flex-direction: column;">
+        <button type="button" class="btn-save" id="btnConnectGoogle">Conectar Cuenta</button>
+        <button type="button" class="btn-danger" id="btnDisconnectGoogle" style="display: none;">Cerrar sesión</button>
+      </div>
+      <div id="googleStatus" class="status-msg"></div>
+    </div>
+
+    <div class="card">
+      <div class="header-with-badge">
+        <h2>Gestión de semanas</h2>
+      </div>
+      <div class="subtitle">Alta de nuevas semanas con sus fórmulas en el panel de progreso de Google Sheets.</div>
+
+      <form id="weekForm">
+        <div class="form-group">
+          <label for="newWeekName">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Nombre de la nueva semana</span>
+          </label>
+          <input type="text" id="newWeekName" placeholder="Ej: Semana 13" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-save" id="btnCreateWeek">Añadir semana a Google Sheets</button>
+      </form>
+      <div id="weekStatus" class="status-msg"></div>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

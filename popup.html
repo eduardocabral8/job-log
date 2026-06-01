@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+
+      --bg-color: oklch(0.19 0.006 240);
+      --card-bg: oklch(0.24 0.008 240);
+      --input-bg: oklch(0.15 0.005 240);
+      --border-color: oklch(0.31 0.010 240);
+      --input-border: oklch(0.39 0.012 240);
+      --text-main: oklch(0.93 0.004 240);
+      --text-muted: oklch(0.66 0.008 240);
+      --text-faint: oklch(0.42 0.008 240);
+
+      --accent: oklch(0.60 0.07 240);
+      --on-accent: oklch(0.15 0.005 240);
+      --focus-ring: rgba(96, 138, 166, 0.20);
+
+      --button-bg: oklch(0.60 0.07 240);
+      --button-text: oklch(0.15 0.005 240);
+      --button-hover: oklch(0.65 0.08 240);
+      --button-press: oklch(0.55 0.06 240);
+
+      --success-bg: oklch(0.24 0.03 145);
+      --success-border: oklch(0.30 0.04 145);
+      --success-text: oklch(0.75 0.11 145);
+
+      --error-bg: oklch(0.22 0.03 25);
+      --error-border: oklch(0.28 0.04 25);
+      --error-text: oklch(0.67 0.13 25);
+
+      --disabled-bg: oklch(0.26 0.006 240);
+      --disabled-border: oklch(0.29 0.006 240);
+      --disabled-text: oklch(0.48 0.006 240);
+
+      --font-sans: 'SF Pro Display', 'Switzer', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+      --fs-title: 1.625rem;
+      --fs-body: 0.8125rem;
+      --fs-small: 0.75rem;
+      --fs-caption: 0.6875rem;
+      --fs-xs: 0.625rem;
+
+      --fw-light: 300;
+      --fw-regular: 400;
+      --fw-medium: 500;
+      --fw-semibold: 600;
+
+      --lh-tight: 1.15;
+      --lh-normal: 1.4;
+
+      --ls-tight: -0.03em;
+      --ls-wide: 0.08em;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      width: 320px;
+      box-sizing: border-box;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: none;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      width: 100%;
+      box-shadow: none;
+      position: relative;
+    }
+
+    .progress-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: transparent;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-loader-bar {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      background-size: 200% 100%;
+      animation: loading-pulse 1.4s infinite linear;
+    }
+
+    @keyframes loading-pulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .card.is-loading .progress-loader {
+      display: block;
+    }
+
+    .header {
+      padding: 20px 20px 0 20px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: var(--fs-title);
+      font-weight: var(--fw-light);
+      margin: 0 0 16px 0;
+      letter-spacing: var(--ls-tight);
+      color: var(--text-main);
+    }
+
+    .body {
+      padding: 0 20px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .area-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #normalArea {
+      display: flex;
+    }
+
+    #configRequiredArea {
+      display: none;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .config-message {
+      font-size: var(--fs-body);
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: var(--lh-normal);
+      text-align: left;
+    }
+
+    button {
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: 1px solid var(--button-bg);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: var(--fs-small);
+      font-weight: var(--fw-semibold);
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    button:hover:not(:disabled) {
+      background-color: var(--button-hover);
+      border-color: var(--button-hover);
+    }
+
+    button:active:not(:disabled) {
+      background-color: var(--button-press);
+      border-color: var(--button-press);
+      transform: translateY(1px) scale(0.985);
+    }
+
+    button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    button:disabled {
+      background-color: var(--disabled-bg);
+      border-color: var(--disabled-border);
+      color: var(--disabled-text);
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: var(--input-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: var(--fs-caption);
+      font-weight: var(--fw-medium);
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      font-family: inherit;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--text-main);
+      color: var(--on-accent);
+      border-color: var(--text-main);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(1px) scale(0.985);
+    }
+
+    .semana-group {
+      width: 100%;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .semana-label {
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-medium);
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: var(--ls-wide);
+      align-self: flex-start;
+    }
+
+    .semana-select {
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      color: var(--text-main);
+      padding: 10px 32px 10px 12px;
+      font-size: var(--fs-small);
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238D96A0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .semana-select:hover {
+      border-color: var(--text-muted);
+    }
+
+    .semana-select:focus {
+      border-color: var(--accent);
+      background-color: var(--input-bg);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .status-area {
+      margin-top: 12px;
+      width: 100%;
+      min-height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .status-text {
+      font-size: var(--fs-caption);
+      font-weight: var(--fw-medium);
+      line-height: var(--lh-normal);
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .status-text:not(:empty) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .status-text.success {
+      display: flex;
+      background-color: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success-text);
+    }
+
+    .status-text.error {
+      display: flex;
+      background-color: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: var(--error-text);
+      word-break: break-word;
+      text-align: left;
+    }
+
+    .status-text.loading {
+      display: flex;
+      color: var(--text-muted);
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+    }
+
+    .spinner {
+      width: 10px;
+      height: 10px;
+      border: 1.5px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner { animation-duration: 1.8s; }
+      * { transition: none !important; }
+    }
+
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--input-bg);
+    }
+  </style>
+</head>
+<body>
+  <div id="popupCard" class="card">
+
+    <div class="progress-loader">
+      <div class="progress-loader-bar"></div>
+    </div>
+
+    <div class="header">
+      <h1>Job Log</h1>
+    </div>
+
+    <div class="body">
+      <div id="normalArea" class="area-container">
+        <div class="semana-group">
+          <label class="semana-label" for="semanaSelect">Semana de postulación</label>
+          <select id="semanaSelect" class="semana-select">
+            <option value="" disabled selected>Cargando semanas…</option>
+          </select>
+        </div>
+
+        <button id="btnPostular" disabled>Registrar postulación</button>
+        <div class="status-area">
+          <div id="status" class="status-text"></div>
+        </div>
+      </div>
+
+      <div id="configRequiredArea" class="area-container">
+        <div class="config-message">
+          Se requiere configurar la API Key de Gemini y la URL de Google Sheets en las opciones de la extensión.
+        </div>
+        <button id="btnConfigurar">Configurar Job Log</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button id="openOptions" class="btn-secondary">Configuración</button>
+    </div>
+  </div>
+
+  <script src="popup-progress.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
